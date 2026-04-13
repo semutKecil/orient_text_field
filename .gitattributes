@@ -1,0 +1,17 @@
+# Exclude example folder and platform-specific code from GitHub language detection
+# This ensures GitHub shows Dart as the primary language for Flutter packages
+
+example/** linguist-vendored
+example/** linguist-generated
+
+# Platform-specific folders contain native code
+android/** linguist-vendored
+ios/** linguist-vendored
+linux/** linguist-vendored
+macos/** linguist-vendored
+windows/** linguist-vendored
+web/** linguist-vendored
+
+# Build artifacts
+build/** linguist-generated
+.fd5a9d41d945b67cc373be1fb92739f1/** linguist-generated
