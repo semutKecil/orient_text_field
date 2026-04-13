@@ -1,6 +1,11 @@
 # OrientTextField
+[![pub package](https://img.shields.io/pub/v/orient_text_field.svg)](https://pub.dev/packages/orient_text_field) ![Platform](https://img.shields.io/badge/platform-flutter-blue) [![Donate on Saweria](https://img.shields.io/badge/Donate-Saweria-orange)](https://saweria.co/hrlns) [![Donate on Ko-fi](https://img.shields.io/badge/Donate-Ko--fi-ff5f5f?logo=ko-fi&logoColor=white&style=flat)](https://ko-fi.com/M4M81N5IYI)
 
 A Flutter package that provides orientation-aware text field widgets. `OrientTextField` and `OrientTextFormField` are drop-in replacements for the standard `TextField` and `TextFormField` widgets with added support for landscape orientation and full-screen editing.
+
+![Fix Height](screenshots/Screenshot_2026-04-13-16-06-04-089_com.example.example.jpg)
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/M4M81N5IYI)
 
 ## Features
 
