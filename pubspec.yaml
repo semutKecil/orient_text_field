@@ -1,5 +1,5 @@
 name: orient_text_field
-description: "A new Flutter package project."
+description: "A Flutter package that provides orientation-aware text field widgets."
 version: 0.1.0
 homepage:
 
