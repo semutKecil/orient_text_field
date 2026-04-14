@@ -1,3 +1,9 @@
+## 0.1.1
+
+* Fixed readme
+* Added code documentation
+* Added bug report guidelines
+
 ## 0.1.0
 
 * Initial release of OrientTextField package

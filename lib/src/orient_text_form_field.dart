@@ -6,7 +6,107 @@ import 'package:flutter/services.dart';
 import 'package:orient_text_field/src/full_screen_field_config.dart';
 import 'package:orient_text_field/src/orient_input.dart';
 
+/// An orientation-aware text form field widget.
+///
+/// [OrientTextFormField] is a drop-in replacement for Flutter's standard [TextFormField]
+/// that automatically provides full-screen editing capabilities in landscape
+/// orientation. It accepts all the same parameters as [TextFormField] with the
+/// addition of [fullScreenFieldConfig] for customizing the full-screen experience.
+///
+/// **Key Features:**
+/// - Automatic full-screen editing in landscape orientation
+/// - Seamless orientation handling without losing focus or text
+/// - Form integration with validation, saving, and error handling
+/// - Customizable full-screen appearance and behavior
+/// - Drop-in replacement - no code changes required beyond the class name
+///
+/// **Setup Requirements:**
+/// Your app must be wrapped with [KeyboardStatusProvider] for this widget
+/// to function correctly:
+///
+/// ```dart
+/// void main() {
+///   runApp(const MyApp());
+/// }
+///
+/// class MyApp extends StatelessWidget {
+///   const MyApp({super.key});
+///
+///   @override
+///   Widget build(BuildContext context) {
+///     return KeyboardStatusProvider(  // <-- Required
+///       child: MaterialApp(
+///         home: Scaffold(
+///           body: MyForm(),
+///         ),
+///       ),
+///     );
+///   }
+/// }
+///
+/// class MyForm extends StatefulWidget {
+///   @override
+///   State<MyForm> createState() => _MyFormState();
+/// }
+///
+/// class _MyFormState extends State<MyForm> {
+///   final _formKey = GlobalKey<FormState>();
+///
+///   @override
+///   Widget build(BuildContext context) {
+///     return Form(
+///       key: _formKey,
+///       child: OrientTextFormField(  // <-- Use OrientTextFormField
+///         decoration: InputDecoration(labelText: 'Enter text'),
+///         validator: (value) {
+///           if (value == null || value.isEmpty) {
+///             return 'Please enter some text';
+///           }
+///           return null;
+///         },
+///       ),
+///     );
+///   }
+/// }
+/// ```
+///
+/// **Migration from TextFormField:**
+/// Simply replace `TextFormField` with `OrientTextFormField` in your existing code.
+/// All parameters work identically:
+///
+/// ```dart
+/// // Before
+/// TextFormField(
+///   controller: myController,
+///   decoration: InputDecoration(labelText: 'Name'),
+///   validator: (value) => value?.isEmpty ?? true ? 'Required' : null,
+///   maxLines: 3,
+/// )
+///
+/// // After - Just change the class name
+/// OrientTextFormField(
+///   controller: myController,
+///   decoration: InputDecoration(labelText: 'Name'),
+///   validator: (value) => value?.isEmpty ?? true ? 'Required' : null,
+///   maxLines: 3,
+/// )
+/// ```
+///
+/// **Note:** The `onTap` parameter is reserved for internal functionality
+/// and cannot be customized.
+///
+/// See also:
+/// - [TextFormField], the standard Flutter text form field widget
+/// - [OrientTextField], the non-form version of this widget
+/// - [FullScreenFieldConfig], for customizing full-screen behavior
 class OrientTextFormField extends StatelessWidget {
+  /// Creates an orientation-aware text form field.
+  ///
+  /// All parameters are identical to [TextFormField] except for [fullScreenFieldConfig].
+  /// For documentation on standard parameters, see [TextFormField.new].
+  ///
+  /// The [fullScreenFieldConfig] parameter allows customization of the
+  /// full-screen editing experience that activates in landscape orientation.
   const OrientTextFormField({
     super.key,
     this.groupId = EditableText,
@@ -169,6 +269,34 @@ class OrientTextFormField extends StatelessWidget {
   final bool stylusHandwritingEnabled;
   final bool canRequestFocus;
   final List<Locale>? hintLocales;
+
+  /// Configuration for full-screen editing mode.
+  ///
+  /// This parameter is specific to [OrientTextFormField] and controls the behavior
+  /// and appearance of the text form field when it switches to full-screen mode
+  /// in landscape orientation.
+  ///
+  /// The full-screen mode provides:
+  /// - Expanded editing interface optimized for landscape viewing
+  /// - Customizable decorations, keyboard appearance, and validation
+  /// - Automatic activation based on device orientation
+  /// - Form validation integration in full-screen mode
+  ///
+  /// Example:
+  /// ```dart
+  /// OrientTextFormField(
+  ///   decoration: InputDecoration(labelText: 'Password'),
+  ///   obscureText: true,
+  ///   validator: (value) => value?.isEmpty ?? true ? 'Required' : null,
+  ///   fullScreenFieldConfig: FullScreenFieldConfig(
+  ///     doneText: 'Save',
+  ///     withObscureToggle: true,
+  ///     keyboardAppearance: Brightness.dark,
+  ///   ),
+  /// )
+  /// ```
+  ///
+  /// Defaults to [FullScreenFieldConfig] with default values.
   final FullScreenFieldConfig fullScreenFieldConfig;
 
   static Widget _defaultContextMenuBuilder(
