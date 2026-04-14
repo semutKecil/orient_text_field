@@ -93,13 +93,13 @@ Customize the full-screen editing mode with these options:
 
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
-| `decoration` | `InputDecoration?` | null | Custom decoration for full-screen mode. If null, inherits from parent field. |
-| `keyboardAppearance` | `Brightness?` | null | Keyboard appearance (light/dark). If null, follows system settings. |
+| `decoration` | `InputDecoration?` | null | Custom decoration for full-screen mode. |
+| `keyboardAppearance` | `Brightness?` | null | Keyboard appearance (light/dark). If null, inherits from parent field. |
 | `doneText` | `String` | "Done" | Label text for the done button. |
 | `obscureText` | `bool?` | null | Override text obscuring for full-screen mode. If null, inherits from parent. |
 | `withObscureToggle` | `bool` | false | Show visibility toggle button for obscured text. |
-| `obscureEnabedIcon` | `Widget` | `Icons.visibility` | Icon shown when text is visible. |
-| `obscureDisabledIcon` | `Widget` | `Icons.password` | Icon shown when text is obscured. |
+| `obscureEnabedIcon` | `Widget` | `Icons.visibility` | Icon shown when text is obscured. |
+| `obscureDisabledIcon` | `Widget` | `Icons.password` | Icon shown when text is visible. |
 | `enableFormValidation` | `bool?` | null | Enable validation in full-screen mode (only for `OrientTextFormField`). |
 
 ## Examples
