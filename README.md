@@ -84,7 +84,7 @@ OrientTextField(
 
 ```dart
 resizeToAvoidBottomInset:
-  MediaQuery.orientationOf(context) != Orientation.landscape,
+  MediaQuery.orientationOf(context) == Orientation.portrait,
 ```
 
 ## FullScreenFieldConfig
