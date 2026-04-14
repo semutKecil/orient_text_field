@@ -156,82 +156,215 @@ class OrientTextField extends StatelessWidget {
     this.fullScreenFieldConfig = const FullScreenFieldConfig(),
   });
 
+  /// {@macro flutter.widgets.editableText.groupId}
   final Object groupId;
+
+  /// {@macro flutter.widgets.editableText.controller}
   final TextEditingController? controller;
+
+  /// {@macro flutter.widgets.editableText.focusNode}
   final FocusNode? focusNode;
+
+  /// {@macro flutter.widgets.editableText.decoration}
   final InputDecoration? decoration;
+
+  /// {@macro flutter.widgets.editableText.keyboardType}
   final TextInputType? keyboardType;
+
+  /// {@macro flutter.widgets.editableText.textCapitalization}
   final TextCapitalization textCapitalization;
+
+  /// {@macro flutter.widgets.editableText.textInputAction}
   final TextInputAction? textInputAction;
+
+  /// {@macro flutter.widgets.editableText.style}
   final TextStyle? style;
+
+  /// {@macro flutter.widgets.editableText.strutStyle}
   final StrutStyle? strutStyle;
+
+  /// {@macro flutter.widgets.editableText.textDirection}
   final TextDirection? textDirection;
+
+  /// {@macro flutter.widgets.editableText.textAlign}
   final TextAlign textAlign;
+
+  /// {@macro flutter.widgets.editableText.textAlignVertical}
   final TextAlignVertical? textAlignVertical;
+
+  /// {@macro flutter.widgets.editableText.autofocus}
   final bool autofocus;
+
+  /// {@macro flutter.widgets.editableText.readOnly}
   final bool readOnly;
   // @Deprecated(
   //   'Use `contextMenuBuilder` instead. '
   //   'This feature was deprecated after v3.3.0-0.5.pre.',
   // )
+  /// {@macro flutter.widgets.editableText.toolbarOptions}
   final ToolbarOptions? toolbarOptions;
+
+  /// {@macro flutter.widgets.editableText.showCursor}
   final bool? showCursor;
+
+  /// {@macro flutter.widgets.editableText.obscuringCharacter}
   final String obscuringCharacter;
+
+  /// {@macro flutter.widgets.editableText.obscureText}
   final bool obscureText;
+
+  /// {@macro flutter.widgets.editableText.autocorrect}
   final bool autocorrect;
+
+  /// {@macro flutter.widgets.editableText.smartDashesType}
   final SmartDashesType? smartDashesType;
+
+  /// {@macro flutter.widgets.editableText.smartQuotesType}
   final SmartQuotesType? smartQuotesType;
+
+  /// {@macro flutter.widgets.editableText.enableSuggestions}
   final bool enableSuggestions;
+
+  /// {@macro flutter.widgets.editableText.maxLengthEnforcement}
   final MaxLengthEnforcement? maxLengthEnforcement;
+
+  /// {@macro flutter.widgets.editableText.maxLines}
   final int? maxLines;
+
+  /// {@macro flutter.widgets.editableText.minLines}
   final int? minLines;
+
+  /// {@macro flutter.widgets.editableText.expands}
   final bool expands;
+
+  /// {@macro flutter.widgets.editableText.maxLength}
   final int? maxLength;
+
+  /// {@macro flutter.widgets.editableText.onChanged}
   final ValueChanged<String>? onChanged;
+
+  /// {@macro flutter.widgets.editableText.onTapOutside}
   final TapRegionCallback? onTapOutside;
+
+  /// {@macro flutter.widgets.editableText.onTapUpOutside}
   final TapRegionUpCallback? onTapUpOutside;
+
+  /// {@macro flutter.widgets.editableText.onEditingComplete}
   final VoidCallback? onEditingComplete;
+
+  /// {@macro flutter.widgets.editableText.onSubmitted}
   final ValueChanged<String>? onSubmitted;
   final FormFieldValidator<String>? validator;
+
+  /// {@macro flutter.widgets.editableText.inputFormatters}
   final List<TextInputFormatter>? inputFormatters;
+
+  /// {@macro flutter.widgets.editableText.enabled}
   final bool? enabled;
+
+  /// {@macro flutter.widgets.editableText.ignorePointers}
   final bool? ignorePointers;
+
+  /// {@macro flutter.widgets.editableText.cursorWidth}
   final double cursorWidth;
+
+  /// {@macro flutter.widgets.editableText.cursorHeight}
   final double? cursorHeight;
+
+  /// {@macro flutter.widgets.editableText.cursorRadius}
   final Radius? cursorRadius;
+
+  /// {@macro flutter.widgets.editableText.cursorColor}
   final Color? cursorColor;
+
+  /// {@macro flutter.widgets.editableText.cursorErrorColor}
   final Color? cursorErrorColor;
+
+  /// {@macro flutter.widgets.editableText.keyboardAppearance}
   final Brightness? keyboardAppearance;
+
+  /// {@macro flutter.widgets.editableText.scrollPadding}
   final EdgeInsets scrollPadding;
+
+  /// {@macro flutter.widgets.editableText.enableInteractiveSelection}
   final bool? enableInteractiveSelection;
+
+  /// {@macro flutter.widgets.editableText.selectAllOnFocus}
   final bool? selectAllOnFocus;
+
+  /// {@macro flutter.widgets.editableText.selectionControls}
   final TextSelectionControls? selectionControls;
+
+  /// {@macro flutter.widgets.editableText.buildCounter}
   final InputCounterWidgetBuilder? buildCounter;
+
+  /// {@macro flutter.widgets.editableText.scrollPhysics}
   final ScrollPhysics? scrollPhysics;
+
+  /// {@macro flutter.widgets.editableText.autofillHints}
   final Iterable<String>? autofillHints;
+
+  /// {@macro flutter.widgets.editableText.scrollController}
   final ScrollController? scrollController;
+
+  /// {@macro flutter.widgets.editableText.restorationId}
   final String? restorationId;
+
+  /// {@macro flutter.widgets.editableText.enableIMEPersonalizedLearning}
   final bool enableIMEPersonalizedLearning;
+
+  /// {@macro flutter.widgets.editableText.mouseCursor}
   final MouseCursor? mouseCursor;
+
+  /// {@macro flutter.widgets.editableText.contextMenuBuilder}
   final EditableTextContextMenuBuilder? contextMenuBuilder;
+
+  /// {@macro flutter.widgets.editableText.spellCheckConfiguration}
   final SpellCheckConfiguration? spellCheckConfiguration;
+
+  /// {@macro flutter.widgets.editableText.magnifierConfiguration}
   final TextMagnifierConfiguration? magnifierConfiguration;
+
+  /// {@macro flutter.widgets.editableText.undoController}
   final UndoHistoryController? undoController;
+
+  /// {@macro flutter.widgets.editableText.onAppPrivateCommand}
   final AppPrivateCommandCallback? onAppPrivateCommand;
+
+  /// {@macro flutter.widgets.editableText.cursorOpacityAnimates}
   final bool? cursorOpacityAnimates;
+
+  /// {@macro flutter.widgets.editableText.selectionHeightStyle}
   final ui.BoxHeightStyle? selectionHeightStyle;
+
+  /// {@macro flutter.widgets.editableText.selectionWidthStyle}
   final ui.BoxWidthStyle? selectionWidthStyle;
+
+  /// {@macro flutter.widgets.editableText.dragStartBehavior}
   final DragStartBehavior dragStartBehavior;
+
+  /// {@macro flutter.widgets.editableText.contentInsertionConfiguration}
   final ContentInsertionConfiguration? contentInsertionConfiguration;
+
+  /// {@macro flutter.widgets.editableText.statesController}
   final MaterialStatesController? statesController;
+
+  /// {@macro flutter.widgets.editableText.clipBehavior}
   final Clip clipBehavior;
   // @Deprecated(
   //   'Use `stylusHandwritingEnabled` instead. '
   //   'This feature was deprecated after v3.27.0-0.2.pre.',
   // )
+  /// {@macro flutter.widgets.editableText.scribbleEnabled}
   final bool scribbleEnabled;
+
+  /// {@macro flutter.widgets.editableText.stylusHandwritingEnabled}
   final bool stylusHandwritingEnabled;
+
+  /// {@macro flutter.widgets.editableText.canRequestFocus}
   final bool canRequestFocus;
+
+  /// {@macro flutter.widgets.editableText.hintLocales}
   final List<Locale>? hintLocales;
 
   /// Configuration for full-screen editing mode.

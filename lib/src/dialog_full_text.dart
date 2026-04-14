@@ -11,6 +11,7 @@ class DialogFullText extends StatefulWidget {
   final FullScreenFieldConfig config;
   final FormFieldValidator<String>? validator;
   final AutovalidateMode? autovalidateMode;
+  final TextDirection? textDirection;
   const DialogFullText({
     super.key,
     required this.controller,
@@ -20,6 +21,7 @@ class DialogFullText extends StatefulWidget {
     this.keyboardType,
     this.validator,
     this.autovalidateMode,
+    this.textDirection,
   });
 
   @override
