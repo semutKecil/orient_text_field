@@ -3,6 +3,7 @@
 * Fixed readme
 * Added code documentation
 * Added bug report guidelines
+* Added topics on pupbspec
 
 ## 0.1.0
 
