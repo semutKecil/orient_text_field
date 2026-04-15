@@ -45,6 +45,7 @@ class _FormExampleState extends State<FormExample> {
             children: [
               OrientTextField(
                 decoration: InputDecoration(labelText: "Text Field"),
+                textDirection: TextDirection.rtl,
               ),
               OrientTextFormField(
                 decoration: InputDecoration(labelText: "Text Form Field"),

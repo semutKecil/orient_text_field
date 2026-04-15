@@ -100,6 +100,7 @@ class _DialogFullTextState extends State<DialogFullText> {
         obscureText: _obscureText,
         keyboardAppearance: widget.config.keyboardAppearance,
         decoration: decoration,
+        textDirection: widget.textDirection,
       ),
     );
     return PopScope(
