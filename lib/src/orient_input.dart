@@ -250,6 +250,7 @@ class _OrientInputState extends State<OrientInput> {
                 config: widget.fullScreenFieldConfig,
                 autovalidateMode: widget.autovalidateMode,
                 validator: widget.validator,
+                textDirection: widget.textDirection,
               ),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             const begin = Offset(0.0, 1.0); // Start at the bottom

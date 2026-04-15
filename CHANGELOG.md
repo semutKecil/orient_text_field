@@ -1,3 +1,8 @@
+## 0.1.2
+
+* Fixed text direction inherits from parent field
+* Added parameter codumentation
+
 ## 0.1.1
 
 * Fixed readme
