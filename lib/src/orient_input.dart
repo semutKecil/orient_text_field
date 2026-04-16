@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui' as ui;
 
 import 'package:flutter/gestures.dart';
@@ -202,6 +203,9 @@ class _OrientInputState extends State<OrientInput> {
   bool _readOnly = true;
   bool? _showCursor = true;
 
+  StreamSubscription? _subOrientation;
+  Orientation? _lastOrientation;
+
   @override
   void initState() {
     super.initState();
@@ -210,6 +214,11 @@ class _OrientInputState extends State<OrientInput> {
     _ownFocusNode = widget.focusNode == null;
     _controller = widget.controller ?? TextEditingController();
     _ownController = widget.controller == null;
+    _subOrientation = OrientEvent.orientationEvent.stream.listen((value) {
+      setState(() {
+        _lastOrientation = value;
+      });
+    });
   }
 
   @override
@@ -217,6 +226,7 @@ class _OrientInputState extends State<OrientInput> {
     // _focusNode.removeListener(showLanscapeField);
     if (_ownFocusNode) _focusNode.dispose();
     if (_ownController) _controller.dispose();
+    _subOrientation?.cancel();
     super.dispose();
   }
 
@@ -229,7 +239,7 @@ class _OrientInputState extends State<OrientInput> {
     var openDialog = false;
     var i = 0;
     while (i < 20) {
-      if (await KeyboardStatusProvider.isKeyboardOpen && _focusNode.hasFocus) {
+      if (await OrientEvent.isKeyboardOpen && _focusNode.hasFocus) {
         openDialog = true;
         break;
       }
@@ -238,7 +248,7 @@ class _OrientInputState extends State<OrientInput> {
     }
 
     if (openDialog && mounted) {
-      await Navigator.push<String>(
+      var res = await Navigator.push<bool>(
         context,
         PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) =>
@@ -269,6 +279,11 @@ class _OrientInputState extends State<OrientInput> {
           },
         ),
       );
+
+      if (res == true && widget.fullScreenFieldConfig.submitOnDone) {
+        widget.onFieldSubmitted?.call(_controller.text);
+      }
+
       if (mounted &&
           MediaQuery.orientationOf(context) == Orientation.portrait) {
         _focusNode.requestFocus();
@@ -304,180 +319,179 @@ class _OrientInputState extends State<OrientInput> {
 
   @override
   Widget build(BuildContext context) {
-    return OrientationBuilder(
-      builder: (context, orientation) {
-        bool isLandscape =
-            MediaQuery.orientationOf(context) == Orientation.landscape;
-        _showCursor = widget.showCursor;
-        _readOnly = widget.readOnly;
-        if (isLandscape && !widget.readOnly) {
-          Future.microtask(() async {
-            if (await KeyboardStatusProvider.isKeyboardOpen &&
-                _focusNode.hasFocus) {
-              showLanscapeField();
-            } else {
-              setState(() {
-                _showCursor = true;
-                _readOnly = true;
-              });
-            }
+    // return OrientationBuilder(
+    //   builder: (context, orientationz) {
+    _lastOrientation ??= MediaQuery.orientationOf(context);
+    bool isLandscape = _lastOrientation == Orientation.landscape;
+    _showCursor = widget.showCursor;
+    _readOnly = widget.readOnly;
+    if (isLandscape && !widget.readOnly) {
+      Future.microtask(() async {
+        if (await OrientEvent.isKeyboardOpen && _focusNode.hasFocus) {
+          showLanscapeField();
+        } else {
+          setState(() {
+            _showCursor = true;
+            _readOnly = true;
           });
         }
+      });
+    }
 
-        if (widget.isFormField) {
-          return TextFormField(
-            groupId: widget.groupId,
-            controller: _controller,
-            initialValue: widget.initialValue,
-            focusNode: _focusNode,
-            forceErrorText: widget.forceErrorText,
-            decoration: widget.decoration,
-            keyboardType: widget.keyboardType,
-            textCapitalization: widget.textCapitalization,
-            textInputAction: widget.textInputAction,
-            style: widget.style,
-            strutStyle: widget.strutStyle,
-            textDirection: widget.textDirection,
-            textAlign: widget.textAlign,
-            textAlignVertical: widget.textAlignVertical,
-            autofocus: !isLandscape ? widget.autofocus : false,
-            readOnly: _readOnly,
-            toolbarOptions: widget.toolbarOptions,
-            showCursor: _showCursor,
-            obscuringCharacter: widget.obscuringCharacter,
-            obscureText: widget.obscureText,
-            autocorrect: widget.autocorrect,
-            smartDashesType: widget.smartDashesType,
-            smartQuotesType: widget.smartQuotesType,
-            enableSuggestions: widget.enableSuggestions,
-            maxLengthEnforcement: widget.maxLengthEnforcement,
-            maxLines: widget.maxLines,
-            minLines: widget.minLines,
-            expands: widget.expands,
-            maxLength: widget.maxLength,
-            onChanged: widget.onChanged,
-            onTap: onTextfieldTap, //widget.onTap,
-            onTapAlwaysCalled: false, // widget.onTapAlwaysCalled,
-            onTapOutside: widget.onTapOutside,
-            onTapUpOutside: widget.onTapUpOutside,
-            onEditingComplete: widget.onEditingComplete,
-            onFieldSubmitted: widget.onFieldSubmitted,
-            onSaved: widget.onSaved,
-            validator: widget.validator,
-            errorBuilder: widget.errorBuilder,
-            inputFormatters: widget.inputFormatters,
-            enabled: widget.enabled,
-            ignorePointers: widget.ignorePointers,
-            cursorWidth: widget.cursorWidth,
-            cursorHeight: widget.cursorHeight,
-            cursorRadius: widget.cursorRadius,
-            cursorColor: widget.cursorColor,
-            cursorErrorColor: widget.cursorErrorColor,
-            keyboardAppearance: widget.keyboardAppearance,
-            scrollPadding: widget.scrollPadding,
-            enableInteractiveSelection: widget.enableInteractiveSelection,
-            selectAllOnFocus: widget.selectAllOnFocus,
-            selectionControls: widget.selectionControls,
-            buildCounter: widget.buildCounter,
-            scrollPhysics: widget.scrollPhysics,
-            autofillHints: widget.autofillHints,
-            autovalidateMode: widget.autovalidateMode,
-            scrollController: widget.scrollController,
-            restorationId: widget.restorationId,
-            enableIMEPersonalizedLearning: widget.enableIMEPersonalizedLearning,
-            mouseCursor: widget.mouseCursor,
-            contextMenuBuilder: widget.contextMenuBuilder,
-            spellCheckConfiguration: widget.spellCheckConfiguration,
-            magnifierConfiguration: widget.magnifierConfiguration,
-            undoController: widget.undoController,
-            onAppPrivateCommand: widget.onAppPrivateCommand,
-            cursorOpacityAnimates: widget.cursorOpacityAnimates,
-            selectionHeightStyle: widget.selectionHeightStyle,
-            selectionWidthStyle: widget.selectionWidthStyle,
-            dragStartBehavior: widget.dragStartBehavior,
-            contentInsertionConfiguration: widget.contentInsertionConfiguration,
-            statesController: widget.statesController,
-            clipBehavior: widget.clipBehavior,
-            scribbleEnabled: widget.scribbleEnabled,
-            stylusHandwritingEnabled: widget.stylusHandwritingEnabled,
-            canRequestFocus: widget.canRequestFocus,
-            hintLocales: widget.hintLocales,
-          );
-        } else {
-          return TextField(
-            groupId: widget.groupId,
-            controller: _controller,
-            focusNode: _focusNode,
-            decoration: widget.decoration,
-            keyboardType: widget.keyboardType,
-            textCapitalization: widget.textCapitalization,
-            textInputAction: widget.textInputAction,
-            style: widget.style,
-            strutStyle: widget.strutStyle,
-            textDirection: widget.textDirection,
-            textAlign: widget.textAlign,
-            textAlignVertical: widget.textAlignVertical,
-            autofocus: !isLandscape ? widget.autofocus : false,
-            readOnly: _readOnly,
-            toolbarOptions: widget.toolbarOptions,
-            showCursor: _showCursor,
-            obscuringCharacter: widget.obscuringCharacter,
-            obscureText: widget.obscureText,
-            autocorrect: widget.autocorrect,
-            smartDashesType: widget.smartDashesType,
-            smartQuotesType: widget.smartQuotesType,
-            enableSuggestions: widget.enableSuggestions,
-            maxLengthEnforcement: widget.maxLengthEnforcement,
-            maxLines: widget.maxLines,
-            minLines: widget.minLines,
-            expands: widget.expands,
-            maxLength: widget.maxLength,
-            onChanged: widget.onChanged,
-            onTap: onTextfieldTap, //widget.onTap,
-            onTapAlwaysCalled: false, // widget.onTapAlwaysCalled,
-            onTapOutside: widget.onTapOutside,
-            onTapUpOutside: widget.onTapUpOutside,
-            onEditingComplete: widget.onEditingComplete,
-            onSubmitted: widget.onFieldSubmitted,
-            inputFormatters: widget.inputFormatters,
-            enabled: widget.enabled,
-            ignorePointers: widget.ignorePointers,
-            cursorWidth: widget.cursorWidth,
-            cursorHeight: widget.cursorHeight,
-            cursorRadius: widget.cursorRadius,
-            cursorColor: widget.cursorColor,
-            cursorErrorColor: widget.cursorErrorColor,
-            keyboardAppearance: widget.keyboardAppearance,
-            scrollPadding: widget.scrollPadding,
-            enableInteractiveSelection: widget.enableInteractiveSelection,
-            selectAllOnFocus: widget.selectAllOnFocus,
-            selectionControls: widget.selectionControls,
-            buildCounter: widget.buildCounter,
-            scrollPhysics: widget.scrollPhysics,
-            autofillHints: widget.autofillHints,
-            scrollController: widget.scrollController,
-            restorationId: widget.restorationId,
-            enableIMEPersonalizedLearning: widget.enableIMEPersonalizedLearning,
-            mouseCursor: widget.mouseCursor,
-            contextMenuBuilder: widget.contextMenuBuilder,
-            spellCheckConfiguration: widget.spellCheckConfiguration,
-            magnifierConfiguration: widget.magnifierConfiguration,
-            undoController: widget.undoController,
-            onAppPrivateCommand: widget.onAppPrivateCommand,
-            cursorOpacityAnimates: widget.cursorOpacityAnimates,
-            selectionHeightStyle: widget.selectionHeightStyle,
-            selectionWidthStyle: widget.selectionWidthStyle,
-            dragStartBehavior: widget.dragStartBehavior,
-            contentInsertionConfiguration: widget.contentInsertionConfiguration,
-            statesController: widget.statesController,
-            clipBehavior: widget.clipBehavior,
-            scribbleEnabled: widget.scribbleEnabled,
-            stylusHandwritingEnabled: widget.stylusHandwritingEnabled,
-            canRequestFocus: widget.canRequestFocus,
-            hintLocales: widget.hintLocales,
-          );
-        }
-      },
-    );
+    if (widget.isFormField) {
+      return TextFormField(
+        groupId: widget.groupId,
+        controller: _controller,
+        initialValue: widget.initialValue,
+        focusNode: _focusNode,
+        forceErrorText: widget.forceErrorText,
+        decoration: widget.decoration,
+        keyboardType: widget.keyboardType,
+        textCapitalization: widget.textCapitalization,
+        textInputAction: widget.textInputAction,
+        style: widget.style,
+        strutStyle: widget.strutStyle,
+        textDirection: widget.textDirection,
+        textAlign: widget.textAlign,
+        textAlignVertical: widget.textAlignVertical,
+        autofocus: !isLandscape ? widget.autofocus : false,
+        readOnly: _readOnly,
+        toolbarOptions: widget.toolbarOptions,
+        showCursor: _showCursor,
+        obscuringCharacter: widget.obscuringCharacter,
+        obscureText: widget.obscureText,
+        autocorrect: widget.autocorrect,
+        smartDashesType: widget.smartDashesType,
+        smartQuotesType: widget.smartQuotesType,
+        enableSuggestions: widget.enableSuggestions,
+        maxLengthEnforcement: widget.maxLengthEnforcement,
+        maxLines: widget.maxLines,
+        minLines: widget.minLines,
+        expands: widget.expands,
+        maxLength: widget.maxLength,
+        onChanged: widget.onChanged,
+        onTap: onTextfieldTap, //widget.onTap,
+        onTapAlwaysCalled: false, // widget.onTapAlwaysCalled,
+        onTapOutside: widget.onTapOutside,
+        onTapUpOutside: widget.onTapUpOutside,
+        onEditingComplete: widget.onEditingComplete,
+        onFieldSubmitted: widget.onFieldSubmitted,
+        onSaved: widget.onSaved,
+        validator: widget.validator,
+        errorBuilder: widget.errorBuilder,
+        inputFormatters: widget.inputFormatters,
+        enabled: widget.enabled,
+        ignorePointers: widget.ignorePointers,
+        cursorWidth: widget.cursorWidth,
+        cursorHeight: widget.cursorHeight,
+        cursorRadius: widget.cursorRadius,
+        cursorColor: widget.cursorColor,
+        cursorErrorColor: widget.cursorErrorColor,
+        keyboardAppearance: widget.keyboardAppearance,
+        scrollPadding: widget.scrollPadding,
+        enableInteractiveSelection: widget.enableInteractiveSelection,
+        selectAllOnFocus: widget.selectAllOnFocus,
+        selectionControls: widget.selectionControls,
+        buildCounter: widget.buildCounter,
+        scrollPhysics: widget.scrollPhysics,
+        autofillHints: widget.autofillHints,
+        autovalidateMode: widget.autovalidateMode,
+        scrollController: widget.scrollController,
+        restorationId: widget.restorationId,
+        enableIMEPersonalizedLearning: widget.enableIMEPersonalizedLearning,
+        mouseCursor: widget.mouseCursor,
+        contextMenuBuilder: widget.contextMenuBuilder,
+        spellCheckConfiguration: widget.spellCheckConfiguration,
+        magnifierConfiguration: widget.magnifierConfiguration,
+        undoController: widget.undoController,
+        onAppPrivateCommand: widget.onAppPrivateCommand,
+        cursorOpacityAnimates: widget.cursorOpacityAnimates,
+        selectionHeightStyle: widget.selectionHeightStyle,
+        selectionWidthStyle: widget.selectionWidthStyle,
+        dragStartBehavior: widget.dragStartBehavior,
+        contentInsertionConfiguration: widget.contentInsertionConfiguration,
+        statesController: widget.statesController,
+        clipBehavior: widget.clipBehavior,
+        scribbleEnabled: widget.scribbleEnabled,
+        stylusHandwritingEnabled: widget.stylusHandwritingEnabled,
+        canRequestFocus: widget.canRequestFocus,
+        hintLocales: widget.hintLocales,
+      );
+    } else {
+      return TextField(
+        groupId: widget.groupId,
+        controller: _controller,
+        focusNode: _focusNode,
+        decoration: widget.decoration,
+        keyboardType: widget.keyboardType,
+        textCapitalization: widget.textCapitalization,
+        textInputAction: widget.textInputAction,
+        style: widget.style,
+        strutStyle: widget.strutStyle,
+        textDirection: widget.textDirection,
+        textAlign: widget.textAlign,
+        textAlignVertical: widget.textAlignVertical,
+        autofocus: !isLandscape ? widget.autofocus : false,
+        readOnly: _readOnly,
+        toolbarOptions: widget.toolbarOptions,
+        showCursor: _showCursor,
+        obscuringCharacter: widget.obscuringCharacter,
+        obscureText: widget.obscureText,
+        autocorrect: widget.autocorrect,
+        smartDashesType: widget.smartDashesType,
+        smartQuotesType: widget.smartQuotesType,
+        enableSuggestions: widget.enableSuggestions,
+        maxLengthEnforcement: widget.maxLengthEnforcement,
+        maxLines: widget.maxLines,
+        minLines: widget.minLines,
+        expands: widget.expands,
+        maxLength: widget.maxLength,
+        onChanged: widget.onChanged,
+        onTap: onTextfieldTap, //widget.onTap,
+        onTapAlwaysCalled: false, // widget.onTapAlwaysCalled,
+        onTapOutside: widget.onTapOutside,
+        onTapUpOutside: widget.onTapUpOutside,
+        onEditingComplete: widget.onEditingComplete,
+        onSubmitted: widget.onFieldSubmitted,
+        inputFormatters: widget.inputFormatters,
+        enabled: widget.enabled,
+        ignorePointers: widget.ignorePointers,
+        cursorWidth: widget.cursorWidth,
+        cursorHeight: widget.cursorHeight,
+        cursorRadius: widget.cursorRadius,
+        cursorColor: widget.cursorColor,
+        cursorErrorColor: widget.cursorErrorColor,
+        keyboardAppearance: widget.keyboardAppearance,
+        scrollPadding: widget.scrollPadding,
+        enableInteractiveSelection: widget.enableInteractiveSelection,
+        selectAllOnFocus: widget.selectAllOnFocus,
+        selectionControls: widget.selectionControls,
+        buildCounter: widget.buildCounter,
+        scrollPhysics: widget.scrollPhysics,
+        autofillHints: widget.autofillHints,
+        scrollController: widget.scrollController,
+        restorationId: widget.restorationId,
+        enableIMEPersonalizedLearning: widget.enableIMEPersonalizedLearning,
+        mouseCursor: widget.mouseCursor,
+        contextMenuBuilder: widget.contextMenuBuilder,
+        spellCheckConfiguration: widget.spellCheckConfiguration,
+        magnifierConfiguration: widget.magnifierConfiguration,
+        undoController: widget.undoController,
+        onAppPrivateCommand: widget.onAppPrivateCommand,
+        cursorOpacityAnimates: widget.cursorOpacityAnimates,
+        selectionHeightStyle: widget.selectionHeightStyle,
+        selectionWidthStyle: widget.selectionWidthStyle,
+        dragStartBehavior: widget.dragStartBehavior,
+        contentInsertionConfiguration: widget.contentInsertionConfiguration,
+        statesController: widget.statesController,
+        clipBehavior: widget.clipBehavior,
+        scribbleEnabled: widget.scribbleEnabled,
+        stylusHandwritingEnabled: widget.stylusHandwritingEnabled,
+        canRequestFocus: widget.canRequestFocus,
+        hintLocales: widget.hintLocales,
+      );
+    }
+    //   },
+    // );
   }
 }

@@ -78,6 +78,14 @@ class FullScreenFieldConfig {
   /// Ignored when used with [OrientTextField].
   final bool? enableFormValidation;
 
+  /// Whether the full-screen editor should invoke [onFieldSubmitted]
+  /// when the user taps the done button.
+  ///
+  /// This only affects full-screen editing mode. If false, the dialog
+  /// closes without submitting via [onFieldSubmitted].
+  /// Defaults to true.
+  final bool submitOnDone;
+
   /// Creates a configuration for full-screen field editing.
   ///
   /// All parameters are optional and default to sensible values.
@@ -92,6 +100,8 @@ class FullScreenFieldConfig {
   ///   - [obscureDisabledIcon]: Icon when text is hidden (default: Icons.password)
   ///   - [enableFormValidation]: Enable validation in full-screen mode
   ///     (only for OrientTextFormField)
+  ///   - [submitOnDone]: Submit via [onFieldSubmitted] when the done
+  ///     button in the full-screen editor is pressed.
   const FullScreenFieldConfig({
     this.decoration,
     this.keyboardAppearance,
@@ -101,5 +111,6 @@ class FullScreenFieldConfig {
     this.obscureEnabedIcon = const Icon(Icons.visibility),
     this.obscureDisabledIcon = const Icon(Icons.password),
     this.enableFormValidation,
+    this.submitOnDone = true,
   });
 }

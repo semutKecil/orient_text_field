@@ -37,6 +37,7 @@ class _DialogFullTextState extends State<DialogFullText> {
   bool _obscureMode = false;
 
   bool _obscureText = false;
+  bool _isDone = false;
 
   String? _errorText;
 
@@ -101,6 +102,9 @@ class _DialogFullTextState extends State<DialogFullText> {
         keyboardAppearance: widget.config.keyboardAppearance,
         decoration: decoration,
         textDirection: widget.textDirection,
+        onSubmitted: (value) {
+          _isDone = true;
+        },
       ),
     );
     return PopScope(
@@ -116,7 +120,7 @@ class _DialogFullTextState extends State<DialogFullText> {
               _closing = true;
               Future.microtask(() {
                 if (context.mounted) {
-                  Navigator.pop(context);
+                  Navigator.pop(context, _isDone);
                 }
               });
             }
@@ -155,6 +159,7 @@ class _DialogFullTextState extends State<DialogFullText> {
                         : SizedBox.shrink(),
                     FilledButton(
                       onPressed: () {
+                        _isDone = true;
                         _focusNode.unfocus();
                       },
                       child: Text(widget.config.doneText),

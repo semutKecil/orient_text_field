@@ -46,10 +46,13 @@ class _FormExampleState extends State<FormExample> {
               OrientTextField(
                 decoration: InputDecoration(labelText: "Text Field"),
                 textDirection: TextDirection.rtl,
+                onSubmitted: (value) {
+                  debugPrint("submitted $value");
+                },
               ),
               OrientTextFormField(
                 decoration: InputDecoration(labelText: "Text Form Field"),
-                maxLines: 3,
+                // maxLines: 3,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter some text';
@@ -57,6 +60,9 @@ class _FormExampleState extends State<FormExample> {
                   return null;
                 },
                 autovalidateMode: AutovalidateMode.onUserInteraction,
+                onFieldSubmitted: (value) {
+                  debugPrint("field submitted $value");
+                },
               ),
               OrientTextField(
                 obscureText: _obscureText,
@@ -76,6 +82,22 @@ class _FormExampleState extends State<FormExample> {
                   obscureText: true,
                   withObscureToggle: true,
                 ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Text("example popup"),
+                        content: OrientTextField(
+                          decoration: InputDecoration(labelText: "test"),
+                        ),
+                      );
+                    },
+                  );
+                },
+                child: Text("show popup"),
               ),
             ],
           ),

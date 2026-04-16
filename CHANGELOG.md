@@ -1,7 +1,12 @@
+## 0.1.3
+
+* Fixed bug. Error when placed on popup alert dialog
+* Added parameter submitondone
+
 ## 0.1.2
 
 * Fixed text direction inherits from parent field
-* Added parameter codumentation
+* Added parameter documentation
 
 ## 0.1.1
 

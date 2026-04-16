@@ -101,6 +101,7 @@ Customize the full-screen editing mode with these options:
 | `obscureEnabedIcon` | `Widget` | `Icons.visibility` | Icon shown when text is obscured. |
 | `obscureDisabledIcon` | `Widget` | `Icons.password` | Icon shown when text is visible. |
 | `enableFormValidation` | `bool?` | null | Enable validation in full-screen mode (only for `OrientTextFormField`). |
+| `submitOnDone` | `bool` | true | Whether the done button submits the text via `onFieldSubmitted` in full-screen mode. |
 
 ## Examples
 

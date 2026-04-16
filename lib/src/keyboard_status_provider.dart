@@ -43,35 +43,36 @@ class KeyboardStatusProvider extends StatefulWidget {
   /// The [child] parameter must not be null and should be your app's root widget.
   const KeyboardStatusProvider({super.key, required this.child});
 
-  static final _keyboardStatus = StreamManager<bool?>(null);
+  // static final _keyboardStatus = StreamManager<bool?>(null);
+  // static final _orientationEvent = StreamManager<Orientation?>(null);
 
-  /// Returns whether the keyboard is currently visible.
-  ///
-  /// This is a static method that can be called from anywhere in the app
-  /// to check if the soft keyboard is currently open.
-  ///
-  /// Returns a Future that completes with `true` if the keyboard is open,
-  /// `false` otherwise.
-  ///
-  /// Example:
-  /// ```dart
-  /// bool keyboardVisible = await KeyboardStatusProvider.isKeyboardOpen;
-  /// if (keyboardVisible) {
-  ///   // Keyboard is open, adjust UI accordingly
-  /// }
-  /// ```
-  static Future<bool> get isKeyboardOpen async {
-    Completer<bool> status = Completer<bool>();
-    var sub = KeyboardStatusProvider._keyboardStatus.stream.listen((value) {
-      if (value != null) {
-        status.complete(value);
-      }
-    });
-    KeyboardStatusProvider._keyboardStatus.emit(null);
-    bool res = await status.future;
-    sub.cancel();
-    return res;
-  }
+  // /// Returns whether the keyboard is currently visible.
+  // ///
+  // /// This is a static method that can be called from anywhere in the app
+  // /// to check if the soft keyboard is currently open.
+  // ///
+  // /// Returns a Future that completes with `true` if the keyboard is open,
+  // /// `false` otherwise.
+  // ///
+  // /// Example:
+  // /// ```dart
+  // /// bool keyboardVisible = await KeyboardStatusProvider.isKeyboardOpen;
+  // /// if (keyboardVisible) {
+  // ///   // Keyboard is open, adjust UI accordingly
+  // /// }
+  // /// ```
+  // static Future<bool> get isKeyboardOpen async {
+  //   Completer<bool> status = Completer<bool>();
+  //   var sub = KeyboardStatusProvider._keyboardStatus.stream.listen((value) {
+  //     if (value != null) {
+  //       status.complete(value);
+  //     }
+  //   });
+  //   KeyboardStatusProvider._keyboardStatus.emit(null);
+  //   bool res = await status.future;
+  //   sub.cancel();
+  //   return res;
+  // }
 
   @override
   State<KeyboardStatusProvider> createState() => _KeyboardStatusProviderState();
@@ -88,9 +89,9 @@ class _KeyboardStatusProviderState extends State<KeyboardStatusProvider> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _sub = KeyboardStatusProvider._keyboardStatus.stream.listen((value) {
+      _sub = OrientEvent.keyboardStatus.stream.listen((value) {
         if (value == null && mounted) {
-          KeyboardStatusProvider._keyboardStatus.emit(
+          OrientEvent.keyboardStatus.emit(
             MediaQuery.viewInsetsOf(context).bottom > 0,
           );
         }
@@ -106,6 +107,29 @@ class _KeyboardStatusProviderState extends State<KeyboardStatusProvider> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.child;
+    return OrientationBuilder(
+      builder: (context, orientation) {
+        OrientEvent.orientationEvent.emit(orientation);
+        return widget.child;
+      },
+    );
+  }
+}
+
+class OrientEvent {
+  static final keyboardStatus = StreamManager<bool?>(null);
+  static final orientationEvent = StreamManager<Orientation?>(null);
+
+  static Future<bool> get isKeyboardOpen async {
+    Completer<bool> status = Completer<bool>();
+    var sub = OrientEvent.keyboardStatus.stream.listen((value) {
+      if (value != null) {
+        status.complete(value);
+      }
+    });
+    OrientEvent.keyboardStatus.emit(null);
+    bool res = await status.future;
+    sub.cancel();
+    return res;
   }
 }
