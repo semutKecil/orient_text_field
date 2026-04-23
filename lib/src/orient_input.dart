@@ -108,10 +108,10 @@ class OrientInput extends StatefulWidget {
   final TextAlignVertical? textAlignVertical;
   final bool autofocus;
   final bool readOnly;
-  // @Deprecated(
-  //   'Use `contextMenuBuilder` instead. '
-  //   'This feature was deprecated after v3.3.0-0.5.pre.',
-  // )
+  @Deprecated(
+    'Use `contextMenuBuilder` instead. '
+    'This feature was deprecated after v3.3.0-0.5.pre.',
+  )
   final ToolbarOptions? toolbarOptions;
   final bool? showCursor;
   final String obscuringCharacter;
@@ -164,13 +164,18 @@ class OrientInput extends StatefulWidget {
   final ui.BoxWidthStyle? selectionWidthStyle;
   final DragStartBehavior dragStartBehavior;
   final ContentInsertionConfiguration? contentInsertionConfiguration;
+  @Deprecated(
+    'Use WidgetStatesController instead. '
+    'Moved to the Widgets layer to make code available outside of Material. '
+    'This feature was deprecated after v3.19.0-0.3.pre.',
+  )
   final MaterialStatesController? statesController;
-  final Clip clipBehavior;
-  // @Deprecated(
-  //   'Use `stylusHandwritingEnabled` instead. '
-  //   'This feature was deprecated after v3.27.0-0.2.pre.',
-  // )
   final bool scribbleEnabled;
+  final Clip clipBehavior;
+  @Deprecated(
+    'Use `stylusHandwritingEnabled` instead. '
+    'This feature was deprecated after v3.27.0-0.2.pre.',
+  )
   final bool stylusHandwritingEnabled;
   final bool canRequestFocus;
   final List<Locale>? hintLocales;

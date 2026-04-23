@@ -638,6 +638,11 @@ class OrientTextFormField extends StatelessWidget {
   /// to its controller. When the widget gains the or loses the focus it will
   /// [WidgetStatesController.update] its controller's [WidgetStatesController.value]
   /// and notify listeners of the change.
+  @Deprecated(
+    'Use WidgetStatesController instead. '
+    'Moved to the Widgets layer to make code available outside of Material. '
+    'This feature was deprecated after v3.19.0-0.3.pre.',
+  )
   final MaterialStatesController? statesController;
 
   /// {@macro flutter.material.Material.clipBehavior}

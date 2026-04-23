@@ -1,3 +1,8 @@
+## 0.1.4
+
+* Update readme.md
+* Added code documentation
+
 ## 0.1.3
 
 * Fixed bug. Error when placed on popup alert dialog
