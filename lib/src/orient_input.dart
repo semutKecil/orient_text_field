@@ -253,8 +253,8 @@ class _OrientInputState extends State<OrientInput> {
     }
 
     if (openDialog && mounted) {
-      var res = await Navigator.push<bool>(
-        context,
+      var res = await Navigator.of(context, rootNavigator: true).push<bool>(
+        // context,
         PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) =>
               DialogFullText(

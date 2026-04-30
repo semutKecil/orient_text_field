@@ -21,7 +21,7 @@ Add this to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  orient_text_field: ^0.1.4
+  orient_text_field: ^0.1.5
 ```
 
 Run:

@@ -1,3 +1,7 @@
+## 0.1.5
+
+* Fixed bug. Broken layout on nested route
+
 ## 0.1.4
 
 * Update readme.md
